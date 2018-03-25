@@ -1,0 +1,1 @@
+IIFE:Immediaately Invoked Function Expreesion:立即执行函数表达式
