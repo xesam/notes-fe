@@ -1,0 +1,65 @@
+<html>
+
+<head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .item_card {
+            width: 300px;
+            border: 1px solid red;
+        }
+
+        .card_header {
+            background: #e4e4e4;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .card_header p {
+            display: inline-block;
+            flex:1;
+        }
+
+        .card_header span {
+            display: inline-block
+        }
+
+        .ellipsis {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="item_card">
+        <div class="card_header">
+            <p>长长长长长长长长长长长长长长长长长长长长长长长长长长长长长</p>
+            <span>￥6.00</span>
+        </div>
+    </div>
+    <div class="item_card">
+        <div class="card_header">
+            <p>长长长长长长长长长长长长长长长长长长长长长长长长长长长长长</p>
+            <span>￥6.00￥6.00￥6.00￥6.00</span>
+        </div>
+    </div>
+    <div class="item_card">
+        <div class="card_header">
+            <p>短短短短短短</p>
+            <span>￥6.00</span>
+        </div>
+    </div>
+    <div class="item_card">
+        <div class="card_header">
+            <p class="ellipsis">省略省略省略省略省略省略省略省略省略省略省略省略省略省略省略</p>
+            <span>￥6.00</span>
+        </div>
+    </div>
+</body>
+
+</html>
