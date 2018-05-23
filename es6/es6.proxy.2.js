@@ -1,20 +1,20 @@
 let target = {
     __name: 'target',
-    method_missing: function () {
-
+    __missing: function (...args) {
+        console.log(args);
     }
 };
 let proxy = new Proxy(target, {
     get(target, key, receiver) {
-        // console.log(target, key, receiver);
-        console.log('get');
         if (!target[key]) {
-            console.log('empty');
+            return target.__missing;
+        } else {
+            return Reflect.get(target, key, receiver);
         }
-        return Reflect.get(target, key, receiver);
     }
 });
 
 console.log(target.__name);
 console.log(proxy.__name);
-console.log(proxy.fn);
+let fn = proxy.fn;
+fn(1, 2, 3, 4, 5);
