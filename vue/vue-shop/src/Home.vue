@@ -6,23 +6,19 @@
 
 <script>
 import Booklist from "./components/Booklist.vue";
+import Vue from "vue";
+import VueResource from "vue-resource";
+Vue.use(VueResource);
+
 export default {
+  created() {
+    this.$http.get('/').then(data => {
+        console.log(data);
+    });
+  },
   data() {
     return {
-      books: [
-        {
-          title: "book 1",
-          id: "1"
-        },
-        {
-          title: "book 2",
-          id: "2"
-        },
-        {
-          title: "book 3",
-          id: "3"
-        }
-      ]
+      books: []
     };
   },
   methods: {
