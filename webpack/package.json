@@ -1,0 +1,13 @@
+{
+    "name": "my.webpack",
+    "description": "",
+    "version": "1.0.0",
+    "author": "xesam <xesamguo@gmail.com>",
+    "license": "MIT",
+    "private": true,
+    "dependencies": {
+        "webpack": "3.8.1",
+        "style-loader": "0.21.0",
+        "css-loader": "0.28.11"
+    }
+}
