@@ -1,4 +1,5 @@
 const path = require("path");
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
     // JavaScript 执行入口文件
@@ -13,8 +14,16 @@ module.exports = {
         rules: [
             {
                 test: /\.css/,
-                use: ["style-loader", "css-loader?minimize"]
+                // use: ["style-loader", "css-loader?minimize"]
+                use: ExtractTextPlugin.extract({
+                    use: ["css-loader"]
+                })
             }
         ]
-    }
+    },
+    plugins: [
+        new ExtractTextPlugin({
+            filename: "[name]_[contenthash:8].css"
+        })
+    ]
 };
