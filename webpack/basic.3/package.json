@@ -8,5 +8,8 @@
     "scripts": {
         "test": "echo 'hello test'",
         "dev": "../node_modules/webpack-dev-server/bin/webpack-dev-server.js --open --config webpack.config.js"
+    },
+    "dependencies": {
+        "axios": "^0.18.0"
     }
 }

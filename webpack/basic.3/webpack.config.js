@@ -1,5 +1,4 @@
 const path = require("path");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
     entry: "./main.js",
@@ -11,15 +10,25 @@ module.exports = {
         rules: [
             {
                 test: /\.css/,
-                use: ExtractTextPlugin.extract({
-                    use: ["css-loader"]
-                })
+                use: ["css-loader"]
             }
         ]
     },
-    plugins: [
-        new ExtractTextPlugin({
-            filename: "[name]_[contenthash:8].css"
-        })
-    ]
+    devServer: {
+        clientLogLevel: "warning",
+        historyApiFallback: true,
+        // hot: true,
+        compress: true,
+        host: "localhost",
+        port: 9999,
+        proxy: {
+            "/proxy": {
+                target: "http://chelaile.net.cn",
+                changeOrigin: true,
+                pathRewrite: {
+                    "^/proxy": ""
+                }
+            }
+        }
+    }
 };
