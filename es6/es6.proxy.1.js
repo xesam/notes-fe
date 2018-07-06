@@ -1,18 +1,20 @@
-let target = {
-    __name: 'target'
-};
-let proxy = new Proxy(target, {
-    set(target, key, value, receiver) {
-        console.log(target, key, value, receiver);
+let trap_target = {};
+let proxy = new Proxy(trap_target, {
+    set(trap_target, key, value, receiver) {
+        if (trap_target.hasOwnProperty(key)) {
+            console.log('hasOwnProperty', trap_target, key, value, receiver);
+        } else {
+            Reflect.set(trap_target, key, value);
+        }
     }
 });
 
-proxy.name = 'proxy';
+proxy.name = 'this is first value';
 
 console.log(proxy.name);
-console.log(target.name);
+console.log(trap_target.name);
 
-target.name = 'target';
+proxy.name = 'this is second value';
 
 console.log(proxy.name);
-console.log(target.name);
+console.log(trap_target.name);
