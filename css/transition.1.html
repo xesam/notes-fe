@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #target{
+            opacity: 0;
+            transition: all 2s ease-in-out;
+        }
+        #target.visible {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+<div id="target">
+    1234
+</div>
+<button id="show">show</button>
+<button id="hide">hide</button>
+<script>
+    let target = document.getElementById('target');
+    document.getElementById('show').addEventListener('click', function (e) {
+        target.className = 'visible';
+    }, false);
+    document.getElementById('hide').addEventListener('click', function (e) {
+        target.className = '';
+    }, false);
+</script>
+</body>
+</html>
