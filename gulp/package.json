@@ -1,0 +1,12 @@
+{
+    "name": "my.gulp",
+    "description": "",
+    "version": "1.0.0",
+    "author": "xesam <xesamguo@gmail.com>",
+    "license": "MIT",
+    "private": true,
+    "devDependencies": {
+        "gulp": "3.9.1",
+        "gulp-uglify": "3.0.1"
+    }
+}
