@@ -1,0 +1,11 @@
+{
+  "name": "my.underscore",
+  "description": "",
+  "version": "1.0.0",
+  "author": "xesam <xesamguo@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "underscore": "1.9.1"
+  }
+}
