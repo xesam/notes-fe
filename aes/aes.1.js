@@ -1,30 +1,72 @@
 const aesjs = require('aes-js');
 
-const key = [0x37, 0x01, 0x8b, 0x97, 0x11, 0x11, 0x47, 0xb2, 0x95, 0xa0, 0xb4, 0x38, 0xc6, 0x7f, 0xf5, 0x4a];
-const iv = [0x65, 0x72, 0x43, 0x49, 0x69, 0xfe, 0x49, 0x7e, 0x9f, 0x2f, 0x35, 0xd1, 0x31, 0xf0, 0x87, 0x65];
+const BLOCK_SIZE = 16;
+
+function split2(str) {
+    let items = str.split('');
+    let itemsOdd = items.filter((ele, index) => index % 2 !== 0);
+    let itemsEven = items.filter((ele, index) => index % 2 === 0);
+    return itemsOdd.map((ele, index) => {
+        return [itemsEven[index], ele];
+    }).map(ele => ele.join('')).map(ele => {
+        return parseInt(ele, 16)
+    });
+}
 
 function PKCS5Padding(text) {
-    const blockSize = 16;
-    if (!text || text.length >= blockSize) {
-        throw Error('text length error');
-    }
     let len = text.length;
-    let padding = blockSize - len;
+    let remainder = len % BLOCK_SIZE;
+    let padding = BLOCK_SIZE - remainder;
     let codes = text.split('').map(ele => ele.charCodeAt(0));
-    for (let i = len; i < blockSize; i++) {
+    for (let i = remainder; i < BLOCK_SIZE; i++) {
         codes.push(padding);
     }
     return codes;
 }
 
-let text = aesjs.utils.utf8.fromBytes(PKCS5Padding('a'));
-let textBytes = aesjs.utils.utf8.toBytes(text);
-let aesCbc = new aesjs.ModeOfOperation.cbc(key, iv);
-let encryptedBytes = aesCbc.encrypt(textBytes);
-let encryptedHex = aesjs.utils.hex.fromBytes(encryptedBytes);
+function parseKey(key) {
+    return split2(key);
+}
 
+function parseIv(iv) {
+    return split2(iv);
+}
+
+function encrypt(text, key, iv) {
+    key = parseKey(key);
+    iv = parseIv(iv);
+    text = aesjs.utils.utf8.fromBytes(PKCS5Padding(text));
+    let textBytes = aesjs.utils.utf8.toBytes(text);
+    let aesCbc = new aesjs.ModeOfOperation.cbc(key, iv);
+    let encryptedBytes = aesCbc.encrypt(textBytes);
+    return aesjs.utils.hex.fromBytes(encryptedBytes);
+}
+
+function decrypt(encrypted, key, iv) {
+    key = parseKey(key);
+    iv = parseIv(iv);
+    let encryptedBytes = aesjs.utils.hex.toBytes(encrypted);
+    let aesCbc = new aesjs.ModeOfOperation.cbc(key, iv);
+    let decryptedBytes = aesCbc.decrypt(encryptedBytes);
+    decryptedBytes = decryptedBytes.filter(ele => ele > BLOCK_SIZE);
+    return aesjs.utils.utf8.fromBytes(decryptedBytes);
+}
+
+//KEY 37018b97111147b295a0b438c67ff54a
+//IV 6572434969fe497e9f2f35d131f08765
 // 明文：a
 // 密文：0ec60dfdc38f86163bca83347955eaf9
-
+let encryptedHex = encrypt('a', '37018b97111147b295a0b438c67ff54a', '6572434969fe497e9f2f35d131f08765');
 console.log(encryptedHex === '0ec60dfdc38f86163bca83347955eaf9');
 
+// 明文："abcdefghijklmnopqrst"
+// 密钥key："6162636465666768696a6b6c6d6e6f70"
+// 偏移量iv："6162636465666768696a6b6c6d6e6f70"
+// 密文：f5657e278d0afad7c848b965898c31df2fce53fee2f55f77833b14981529bee1
+let encryptedHex2 = encrypt('abcdefghijklmnopqrst', '6162636465666768696a6b6c6d6e6f70', '6162636465666768696a6b6c6d6e6f70');
+console.log(encryptedHex2 === 'f5657e278d0afad7c848b965898c31df2fce53fee2f55f77833b14981529bee1');
+
+let decrypted1 = decrypt('0ec60dfdc38f86163bca83347955eaf9', '37018b97111147b295a0b438c67ff54a', '6572434969fe497e9f2f35d131f08765');
+console.log('a' === decrypted1);
+let decrypted2 = decrypt('f5657e278d0afad7c848b965898c31df2fce53fee2f55f77833b14981529bee1', '6162636465666768696a6b6c6d6e6f70', '6162636465666768696a6b6c6d6e6f70');
+console.log('abcdefghijklmnopqrst' === decrypted2);
