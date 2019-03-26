@@ -1,12 +1,16 @@
 {
-    "name": "my.webpack",
-    "description": "",
-    "version": "1.0.0",
-    "author": "xesam <xesamguo@gmail.com>",
-    "license": "MIT",
-    "private": true,
-    "scripts": {
-        "test": "echo 'hello test'",
-        "dev": "../node_modules/webpack-dev-server/bin/webpack-dev-server.js --open --config webpack.config.js"
-    }
+  "name": "my.webpack",
+  "description": "",
+  "version": "1.0.0",
+  "author": "xesam <xesamguo@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "test": "echo 'hello test'",
+    "dev": "webpack-dev-server --open --config webpack.config.js"
+  },
+  "dependencies": {
+    "webpack": "3.8.1",
+    "webpack-dev-server": "2.11.2"
+  }
 }
