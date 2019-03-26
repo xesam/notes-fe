@@ -13,11 +13,19 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.css/,
-                // use: ["style-loader", "css-loader?minimize"]
-                use: ExtractTextPlugin.extract({
-                    use: ["css-loader"]
-                })
+                test: /\.css$/,
+                use: [
+                    "style-loader",
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            minimize: true
+                        }
+                    }
+                ]
+                // use: ExtractTextPlugin.extract({
+                //     use: ["css-loader"]
+                // })
             }
         ]
     },
