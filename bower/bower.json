@@ -1,0 +1,21 @@
+{
+  "name": "auto",
+  "homepage": "https://github.com/xesam/my-fe",
+  "authors": [
+    "xesam <xesamguo@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "3.3.5",
+    "d3": "5.0.0"
+  }
+}
