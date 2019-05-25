@@ -17,7 +17,6 @@ module.exports = {
     devServer: {
         clientLogLevel: "warning",
         historyApiFallback: true,
-        // hot: true,
         compress: true,
         host: "localhost",
         port: 9999,
@@ -30,5 +29,6 @@ module.exports = {
                 }
             }
         }
-    }
+    },
+    devtool: 'source-map',
 };

@@ -2,11 +2,9 @@ let axios = require("axios");
 
 axios
     .get("/proxy")
-    .then(function(response) {
-        console.log(response.data);
+    .then(function (response) {
+        console.log(response.status);
     })
-    .catch(function(err) {
+    .catch(function (err) {
         console.log(err);
     });
-
-//https://www.baidu.com/s?wd=vue
