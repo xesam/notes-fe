@@ -28,6 +28,11 @@ module.exports = {
             }
         ]
     },
+    resolve: {
+        alias: {
+            '@': './components/'
+        }
+    },
     plugins: [
         new ExtractTextPlugin({
             filename: "[name]_[contenthash:8].css"
