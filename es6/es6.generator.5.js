@@ -1,3 +1,5 @@
+const assert = require('assert');
+
 function run(taskDef) {
     let task = taskDef();
     let result = task.next();
@@ -8,10 +10,10 @@ function run(taskDef) {
                 result.value((err, data) => {
                     if (err) {
                         result = task.throw(err);
-                        return;
+                    } else {
+                        result = task.next(data);
+                        step();
                     }
-                    result = task.next(data);
-                    step();
                 });
             } else {
                 result = task.next();
@@ -33,6 +35,20 @@ function fetchData() {
 
 run(function* () {
     let c = yield fetchData();
-    console.log(c);
+    assert.strictEqual(c, 'hello');
 });
 
+run(function* () {
+    let sum = 0;
+    try {
+        let c = yield function (cbk) {
+            setTimeout(() => {
+                cbk(Error('this is a error'));
+            })
+        };
+        sum += 100;
+    } catch (e) {
+        sum += 200;
+    }
+    assert.strictEqual(sum, 200);
+});

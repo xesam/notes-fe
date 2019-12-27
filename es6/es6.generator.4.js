@@ -1,10 +1,12 @@
+const assert = require('assert');
+
 function run(taskDef) {
     let task = taskDef();
     let result = task.next();
 
     function step() {
         if (!result.done) {
-            result = task.next();
+            result = task.next(result.value);
             step();
         }
     }
@@ -12,11 +14,10 @@ function run(taskDef) {
     step();
 }
 
-run(function *() {
-   console.log(1);
-   yield ;
-   console.log(2);
-   yield ;
-   console.log(3);
+run(function* () {
+    const r1 = yield 100;
+    assert.strictEqual(100, r1);
+    const r2 = yield 200 + r1;
+    assert.strictEqual(300, r2);
 });
 
