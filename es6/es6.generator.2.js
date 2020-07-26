@@ -1,3 +1,5 @@
+const assert = require('assert');
+
 let con = 1;
 
 function* it() {
@@ -7,13 +9,13 @@ function* it() {
 }
 
 let i = it();
-console.log(i.next());
+assert.strictEqual(i.next().value, 2);
 con++;
-console.log(i.next());
+assert.strictEqual(i.next().value, 4);
 con++;
-console.log(i.next());
+assert.strictEqual(i.next().value, 6);
 con++;
-console.log(i.next());
+assert.strictEqual(i.next().value, undefined);
 con++;
-console.log(i.next());
+assert.strictEqual(i.next().value, undefined);
 con++;
