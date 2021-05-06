@@ -6,6 +6,6 @@
   "license": "MIT",
   "private": true,
   "devDependencies": {
-    "underscore": "1.9.1"
+    "underscore": "1.12.1"
   }
 }
