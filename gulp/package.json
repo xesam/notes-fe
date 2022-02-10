@@ -17,6 +17,6 @@
         "gulp-uglify": "3.0.1",
         "gulp-connect": "5.6.1",
         "jshint": "2.1.0",
-        "node-sass": "4.9.3"
+        "node-sass": "7.0.0"
     }
 }
