@@ -11,8 +11,12 @@ function preset(presetOption = {}, defaultConstructor = Constructor) {
         }
         option.data = Object.assign({}, presetOption.data, option.data ? option.data : {});
         option.items = presetOption.items.concat(option.items ? option.items : []);
-        const constructor = constructors.shift();
-        return constructor(option, ...constructors);
+        if (constructors.length) {
+            const constructor = constructors.shift();
+            return constructor(option, ...constructors);
+        } else {
+            return defaultConstructor(option);
+        }
     }
 }
 
