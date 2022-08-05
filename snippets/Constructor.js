@@ -4,18 +4,19 @@ function Constructor(option) {
     return option;
 }
 
-function preset(presetOption = {}, defaultConstructor = Constructor) {
-    return function $(option = {}, ...constructors) {
-        if (constructors.length === 0) {
-            constructors = [defaultConstructor];
-        }
+function preset(presetOption = {}, ...defaultConstructors) {
+    return function $(option = {}, ...applyConstructors) {
+        // merge
         option.data = Object.assign({}, presetOption.data, option.data ? option.data : {});
         option.items = presetOption.items.concat(option.items ? option.items : []);
-        if (constructors.length) {
-            const constructor = constructors.shift();
-            return constructor(option, ...constructors);
+        if (applyConstructors.length) {
+            const constructor = applyConstructors.shift();
+            return constructor(option, ...applyConstructors);
+        } else if (defaultConstructors.length) {
+            const constructor = defaultConstructors.shift();
+            return constructor(option, ...defaultConstructors);
         } else {
-            return defaultConstructor(option);
+            return Constructor(option);
         }
     }
 }
@@ -38,12 +39,7 @@ const ComponentB = preset({
 const ComponentAB = preset({
     data: {name: 'AB'},
     items: ['AB1', "AB2"]
-}, ComponentA);
-
-const ComponentBA = preset({
-    data: {name: 'BA'},
-    items: ['BA1', "BA2"]
-}, ComponentB);
+}, ComponentA, ComponentB);
 
 assert.deepEqual(
     ComponentA({
@@ -63,7 +59,7 @@ assert.deepEqual(
     }),
     {
         data: {name: 'params.AB'},
-        items: ['A1', "A2", 'AB1', "AB2", 'params.AB1', "params.AB2"]
+        items: ['B1', "B2", 'A1', "A2", 'AB1', "AB2", 'params.AB1', "params.AB2"]
     }
 )
 
@@ -88,5 +84,27 @@ assert.deepEqual(
     {
         data: {name: 'params.AB'},
         items: ['Common1', "Common2", 'A1', "A2", 'AB1', "AB2", 'params.AB1', "params.AB2"]
+    }
+)
+
+assert.deepEqual(
+    ComponentAB({
+        data: {name: 'params.AB'},
+        items: ['params.AB1', "params.AB2"]
+    }, ComponentA, CommonComponent),
+    {
+        data: {name: 'params.AB'},
+        items: ['Common1', "Common2", 'A1', "A2", 'AB1', "AB2", 'params.AB1', "params.AB2"]
+    }
+)
+
+assert.deepEqual(
+    ComponentAB({
+        data: {name: 'params.AB'},
+        items: ['params.AB1', "params.AB2"]
+    }, ComponentB, CommonComponent),
+    {
+        data: {name: 'params.AB'},
+        items: ['Common1', "Common2", 'B1', "B2", 'AB1', "AB2", 'params.AB1', "params.AB2"]
     }
 )
