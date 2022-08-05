@@ -1,6 +1,6 @@
+const assert = require('assert');
+
 function Component(option) {
-    console.log('init data:', option.data);
-    console.log('init items:', option.items);
     return option;
 }
 
@@ -8,7 +8,7 @@ function preset(presetOption = {}, defaultConstructor = Component) {
     return function (option = {}, constructor = defaultConstructor) {
         option.data = Object.assign({}, presetOption.data, option.data ? option.data : {});
         option.items = presetOption.items.concat(option.items ? option.items : []);
-        constructor(option);
+        return constructor(option);
     }
 }
 
@@ -39,18 +39,43 @@ const ComponentBA = preset({
 
 // ComponentA();
 // ComponentB();
-ComponentAB({
+const optionAB = ComponentAB({
     data: {name: 'params.AB'},
     items: ['params.AB1', "params.AB2"]
 });
-ComponentAB({
-    data: {name: 'params.AB'},
-    items: ['params.AB1', "params.AB2"]
-}, CommonComponent);
-ComponentAB({
-    data: {name: 'params.AB'},
-    items: ['params.AB1', "params.AB2"]
-}, o => {
-    ComponentA(o, CommonComponent);
-});
+
+assert.deepEqual(
+    ComponentAB({
+        data: {name: 'params.AB'},
+        items: ['params.AB1', "params.AB2"]
+    }),
+    {
+        data: {name: 'params.AB'},
+        items: ['A1', "A2", 'AB1', "AB2", 'params.AB1', "params.AB2"]
+    }
+)
+
+assert.deepEqual(
+    ComponentAB({
+        data: {name: 'params.AB'},
+        items: ['params.AB1', "params.AB2"]
+    }, CommonComponent),
+    {
+        data: {name: 'params.AB'},
+        items: ['Common1', "Common2", 'AB1', "AB2", 'params.AB1', "params.AB2"]
+    }
+)
+
+assert.deepEqual(
+    ComponentAB({
+        data: {name: 'params.AB'},
+        items: ['params.AB1', "params.AB2"]
+    }, o => {
+        return ComponentA(o, CommonComponent);
+    }),
+    {
+        data: {name: 'params.AB'},
+        items: ['Common1', "Common2", 'A1', "A2", 'AB1', "AB2", 'params.AB1', "params.AB2"]
+    }
+)
 // ComponentBA();
